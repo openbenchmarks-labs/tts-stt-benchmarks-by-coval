@@ -4,7 +4,7 @@
   "source_url": "https://benchmarks.coval.ai",
   "methodology_url": "https://github.com/coval-ai/benchmarks",
   "api_base": "https://benchmarks-api-6wxgp27p2a-ue.a.run.app",
-  "synced_at": "2026-08-30T10:57:12.880Z",
+  "synced_at": "2026-08-31T12:15:11.276Z",
   "latency_metric": {
     "TTS": "TTFA",
     "STT": "TTFS"
