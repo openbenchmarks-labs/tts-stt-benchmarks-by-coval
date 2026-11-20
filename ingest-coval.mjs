@@ -1,16 +1,15 @@
-// Mirror Coval's public voice benchmark (TTS + STT) into a committed snapshot
-// that the /voice page renders. Attributed to Coval — this is THEIR run; we
-// pull-and-cache with attribution, never proxy live.
+// Mirror Coval's public voice benchmark (TTS + STT) into a committed snapshot.
+// Attributed to Coval — this is THEIR run; we pull-and-cache with attribution,
+// never proxy live.
 //
-// Pull-and-cache: fetch aggregates + leaderboard + providers, DROP the heavy raw
-// `series` (~11 MB), keep only `model_stats`, normalize latency units to ms,
-// validate, and write data/coval/voice.json. If a fetch/validation fails, we
-// leave the existing snapshot untouched (never publish a broken/partial mirror).
+// Pull-and-cache: fetch aggregates + providers + the latest run, DROP the heavy
+// raw `series` (~11 MB), keep only `model_stats`, normalize latency units to ms,
+// validate, and write the snapshot. If a fetch/validation fails, we leave the
+// existing snapshot untouched (never publish a broken/partial mirror).
 //
-// Run: node scripts/ingest-coval.mjs   (daily via GitHub Action)
+// Run: node ingest-coval.mjs   (daily via GitHub Action)
 //
-// Host note: this is Coval's internal Cloud Run URL today. If they give us a
-// canonical host, set COVAL_API_BASE and nothing else changes.
+// Set COVAL_API_BASE to point at a different host of Coval's API.
 
 import { promises as fs } from "node:fs";
 import path from "node:path";
@@ -19,8 +18,8 @@ const API_BASE =
   process.env.COVAL_API_BASE ||
   "https://benchmarks-api-6wxgp27p2a-ue.a.run.app";
 
-// In the mirror repo the Action sets COVAL_OUT_PATH=coval-benchmarks.json (repo
-// root); locally it defaults under data/coval/ for the site's fallback seed.
+// In this repo the Action sets COVAL_OUT_PATH=coval-benchmarks.json (repo
+// root); the default below is used when it is unset.
 const OUT_PATH = process.env.COVAL_OUT_PATH || "data/coval/coval-benchmarks.json";
 const BENCHMARKS = ["TTS", "STT"];
 const WINDOWS = ["24h", "7d", "30d"];
